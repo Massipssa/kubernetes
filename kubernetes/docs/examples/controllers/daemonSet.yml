@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: test-dset
+
+spec:
+  selector: 
+    matchLabels: 
+      app: nginx-app
+ # pods to run 
+  template: 
+    metadata: 
+      labels: 
+        app: nginx-app
+        tier: frontend
+    spec:
+      containers: 
+      - name: nginx-container
+        image: nginx
+        ports: 
+          - containerPort: 80

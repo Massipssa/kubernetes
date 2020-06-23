@@ -1,0 +1,161 @@
+# ======================================================================
+#                               Services
+# ======================================================================
+# Service NodePort to expose port 32080 to external
+apiVersion: v1
+kind: Service
+metadata:
+  name: airflow-svc
+  labels:
+    app: airflow-app
+spec:
+  type: NodePort
+  selector:
+    app: airflow-app
+  ports:
+    - name: airflow-port
+      protocol: TCP
+      # name of port exposed by the container
+      targetPort: airflow-port
+      # node exposed by service in internal
+      port: 8080
+      # node to expose to external
+      nodePort: 32080
+
+---
+# Service ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres
+  ports:
+    - name: postgres-port
+      targetPort: postgres-port
+      port: 5432
+
+# ======================================================================
+#                               Volumes
+# ======================================================================
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-airflow
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/massi/kubernetes/volumes/airflow"
+    type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-airflow
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+# ======================================================================
+#                             Deploys
+# ======================================================================
+# Airflow webserver deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airflow-app
+  template:
+    metadata:
+      name: airflow-server
+      labels:
+        app: airflow-app
+    spec:
+      containers:
+        - name: aiflow-container
+          image: puckel/docker-airflow
+          ports:
+            - name: airflow-port
+              containerPort: 8080
+          volumeMounts:
+            - name: secret-password
+              mountPath: "/etc/password"
+              readOnly: true
+            - name: airflow-volume
+              mountPath: "/usr/local/airflow"
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              value: airflow
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_db
+            - name: EXECUTOR
+              value: Celery
+      volumes:
+        # define secret volume
+        - name: secret-password
+          secret:
+            secretName: secret-password
+        # define pvc
+        - name: airflow-volume
+          persistentVolumeClaim:
+            claimName: pvc-airflow
+---
+# Postgrsql deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      name: postgres-db
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-container
+          image: postgres
+          ports:
+            - name: postgres-port
+              containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: airflow
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_user
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_db

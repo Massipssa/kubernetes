@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  # name of rs 
+  name: nginx-rs
+spec:
+  # nb of replicas to have all time 
+  replicas: 3
+  # link between RS and Pods is by selector and labels 
+  selector:
+    # when have one value 
+    matchLabels: 
+        app: nginx-app
+    matchExpressions: 
+        - {key: tier, operator: In, values: [frontend]}
+  # pods to run 
+  template: 
+    metadata: 
+      name: nginx-pod-rs
+      labels: 
+        app: nginx-app
+        tier: frontend
+    spec:
+      containers: 
+      - name: nginx-container
+        image: nginx
+        ports: 
+          - containerPort: 80

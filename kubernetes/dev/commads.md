@@ -1,0 +1,1 @@
+- execute pod: ```kubectl exec -it <pod-name> <command>```

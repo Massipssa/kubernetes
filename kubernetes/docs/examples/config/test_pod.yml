@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: nginx-pod
+  labels: 
+    app: nginx
+    tier: dev
+spec: 
+  containers: 
+    - name: ngix-container
+      image: nginx 
+      # ??
+      command: ["/bin/sh", "-c", "env"]
+      # Pass env variable to pod using literal configmap
+      env: 
+        - name: SPECIAL_LEVEL_KEY
+          valuefrom:
+            configMapKeyRef: 
+              name: test-configmap-2
+              key: key1
+  restartPolicy: Never

@@ -1,0 +1,37 @@
+apiVersion: authentication.k8s.io/v1beta1
+kind: Role
+metadata:
+  namespace: default
+rules:
+    # from where resouces come (ex: pods pods come from apps)
+  - apiGroups: [""]
+    # On which resources
+    resources: ["pods"]
+    # What he can do
+    verbs: ["get", "watch", "list"]
+
+---
+#------------------------------
+#         Role
+#------------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: finance
+  name: test-role
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - list
+
+---
+#------------------------------
+#         Role Binding
+#------------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding

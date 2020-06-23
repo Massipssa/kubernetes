@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: ngix-pod
+  labels: 
+    app: ngix
+    tier: dev
+spec: 
+  containers: 
+    - name: ngix-container
+      image: ngix 
+    
