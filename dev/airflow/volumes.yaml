@@ -1,0 +1,29 @@
+# ======================================================================
+#                               Volumes
+# ======================================================================
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-airflow
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/massi/kubernetes/volumes/airflow"
+    type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-airflow
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

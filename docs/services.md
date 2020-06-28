@@ -8,6 +8,6 @@
 - **Cluster-IP**
     - Reachable only within the cluster
 - **NodePort**
-    * Expose node to ouside
+    * Expose node to the outside
 - **LoadBalancer**
     * App is distributed over cluster

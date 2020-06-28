@@ -2,8 +2,11 @@
 
 - [Pod](#pod)
 - [ReplicatSet](#rs)  
+- [Deployment](#deployment)
 - [Replication Controller (RC)](#rc)  
 - [Job](#job)
+- [StatefulSet](#statefulset)
+- [DeamonSet](#deamonset)
 
 ## POD <a name="pod"></a>
 
@@ -14,8 +17,8 @@
     1. Submit file (yaml or json) to API Server
     2. Pods go to scheduler and they stay in ***Pending*** state until all scheduled they pass to ***Running***
     3. Pod may have:
-        - **Succed**
-        - **Failed**: when Pod fails it can not be recovred
+        - **Succeed**
+        - **Failed**: when Pod fails it cannot be recovered
 
 - **Create**
     ```kubectl  create -f path/to/file.yml```
@@ -106,7 +109,7 @@ spec:
           - containerPort: 80
 ```
 
-## Deployement
+## Deployment <a name="deployment"></a>
 
 - Is controller  
 
@@ -120,7 +123,7 @@ spec:
 
 ### Types
 
-- Recreate (when version 1 is shudown start version 2) implies downtime of service
+- Recreate (when version 1 is shutdown start version 2) implies downtime of service
 - RollingUpdate (Ramped or Incremental)
 - Canary
 - Blue / Green

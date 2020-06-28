@@ -97,7 +97,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /usr/share/elasticsearch/data
-              #subPath: $(elasticsearch)
           env:
             - name: cluster.name
               value: k8s-logs

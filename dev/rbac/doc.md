@@ -44,8 +44,3 @@
     ```bash
         kubectl create role pod-reader --verb=get --verb=list --verb=watch --resource=pods --namespace=finance
     ````
-  
-### Minikube
-- Enable addon ````minikube addons enable <addon-name>````
-- Get dashoard url ````minikube dashboard --url````
-- List addon ````minikube addons list````

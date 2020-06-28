@@ -3,7 +3,7 @@ kind: Role
 metadata:
   namespace: default
 rules:
-    # from where resouces come (ex: pods pods come from apps)
+    # from where resources come (ex: pods pods come from apps)
   - apiGroups: [""]
     # On which resources
     resources: ["pods"]
@@ -28,7 +28,6 @@ rules:
       - get
       - watch
       - list
-
 ---
 #------------------------------
 #         Role Binding
