@@ -1,9 +1,9 @@
-apiVersion: authentication.k8s.io/v1beta1
+apiVersion: rbac.authentication.k8s.io/v1beta1
 kind: Role
 metadata:
   namespace: default
 rules:
-    # from where resources come (ex: pods pods come from apps)
+    # from where resources come (ex: pods come from apps)
   - apiGroups: [""]
     # On which resources
     resources: ["pods"]

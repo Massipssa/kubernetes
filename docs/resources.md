@@ -6,7 +6,7 @@
 
 ## Limit
 
-* Container container never go above this limit
+* Container never go above this limit
 
 ## ResourceQuotas
 

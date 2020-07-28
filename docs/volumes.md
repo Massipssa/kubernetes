@@ -1,4 +1,4 @@
-# Volumes
+## Volumes
 
 * Pods are ephemeral and stateless (can be deployed in any k8s environment)
 * All containers running inside pod have access to the defined volume
@@ -9,3 +9,9 @@
 * K8s supports multiple volumes as:
     * EmptyDir
     * hostPath
+    
+## PersistentVolume
+
+## PersistentVolumeClaim
+ 
+- Request for storage by the user

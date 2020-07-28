@@ -1,1 +1,2 @@
-- execute pod: ```kubectl exec -it <pod-name> <command>```
+- execute pod: `kubectl exec -it <pod-name> <command>`
+- check auth: `kubectl auth can-i <list | create | edit | delete> <object>`
