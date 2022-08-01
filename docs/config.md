@@ -2,7 +2,7 @@
 
 ## ConfigMap
 
-* K8s object which to help handle configuration with container
+* K8s object that helps to handle configuration inside container
 * Way to make images portable
 * Create:
 
