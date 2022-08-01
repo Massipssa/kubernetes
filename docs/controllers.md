@@ -11,7 +11,7 @@
 ## POD <a name="pod"></a>
 
 - Scheduling unit in k8S
-- Privides runtime environment for application that we deploy
+- Provides runtime environment for application that we deploy
 
 - **Pod lifecycle**
     1. Submit file (yaml or json) to API Server
