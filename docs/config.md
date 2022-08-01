@@ -3,7 +3,7 @@
 ## ConfigMap
 
 * K8s object that helps to handle configuration inside container
-* Way to make images portable
+* Way to make the images portable
 * Create:
 
     ```kubectl create configmap <map-name> <data-source>```
