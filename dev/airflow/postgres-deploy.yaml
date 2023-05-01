@@ -21,6 +21,7 @@ spec:
             - name: postgres-port
               containerPort: 5432
           env:
+            # todo: read from secret
             - name: POSTGRES_PASSWORD
               value: airflow
             - name: POSTGRES_USER
