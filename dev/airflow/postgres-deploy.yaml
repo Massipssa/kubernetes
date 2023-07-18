@@ -1,0 +1,36 @@
+# Postgresql deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      name: postgres-db
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-container
+          image: postgres
+          ports:
+            - name: postgres-port
+              containerPort: 5432
+          env:
+            # todo: read from secret
+            - name: POSTGRES_PASSWORD
+              value: airflow
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_user
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: airflow-config
+                  key: postgres_db

@@ -33,6 +33,9 @@ spec:
   nodeSelector:
     disktype: SSD
 
+  # schedule in specified node
+  nodeName: foo-node
+
   # specify constraints based on the node labels
   affinity:
     nodeAffinity:
@@ -62,4 +65,3 @@ spec:
     - name: test-volume
       awsElasticBlockStore:
         volumeID: my-id
-

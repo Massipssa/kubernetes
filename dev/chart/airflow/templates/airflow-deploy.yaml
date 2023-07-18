@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: airflow-deploy
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.airflowPortal.replicas_count}}
   selector:
     matchLabels:
       app: airflow-app
@@ -15,12 +15,11 @@ spec:
         app: airflow-app
     spec:
       containers:
-        - name: aiflow-container
-          image: "{ { .Values.airflow.image.repository } }:{{ .Values.airflow.image.tag }}"
-
+        - name: airflow-container
+          image: {{ .Values.airflowPortal.image.repository}}:{{ .Values.airflowPortal.image.version}}
           ports:
             - name: airflow-port
-              containerPort: 8080
+              containerPort: {{ .Values.airflowPortal.port}}
           volumeMounts:
             - name: secret-password
               mountPath: "/etc/password"
