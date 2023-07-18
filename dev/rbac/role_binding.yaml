@@ -1,0 +1,18 @@
+#------------------------------
+#         Role Binding
+#------------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: test-rolebinding
+  namespace: default
+# reference to the role to grant to subjects
+roleRef:
+  kind: Role
+  name: test-role
+  apiGroup: rbac.authorization.k8s.io
+
+subjects:
+  - kind: User
+    name: bob
+    namespace: default

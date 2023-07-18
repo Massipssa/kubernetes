@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-cronjob
+spec:
+  template:
+    metadata:
+      name: test-cronjob
+    spec:
+      containers:
+        -
+

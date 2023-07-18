@@ -1,0 +1,21 @@
+airflow:
+  image:
+    repository: "puckel/docker-airflow"
+    tag: "latest"
+
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: latest
+  service:
+    port: 5432
+    name: postgres-port
+  storage:
+    name: postgredb
+    pvCapacity: 5Gi
+    pvcStorageRequest: 5Gi
+    path: /var/lib/postgresql/data
+  auth:
+    username: airflow
+    password: airflow

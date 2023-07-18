@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service-deploy
+  labels:
+    app: auth-service
+spec:
+  replicas: 1
+  # Is used by the deployment to find which pods to manages. Is relies on label defined in Pod
+  # template labels
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-container
+          image: massipssa/devs:auth
+          ports:
+          - containerPort: 80
+

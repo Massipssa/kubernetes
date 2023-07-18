@@ -32,10 +32,10 @@
 ## Replication Controller (RC) <a name="rc"></a>
 
 - Ensures that the number of pods are running always at any time
-- RC and Pods are linkend by labels
+- RC and Pods are linked by labels
 - Advantages:
     1. High availability
-    2. Load balancing  (trafic equalty distributed)
+    2. Load balancing  (traffic equally distributed)
     3. RC is ***OLD*** and was replaced by ***ReplicatSet***
 
 ### Example
@@ -111,7 +111,10 @@ spec:
 
 ## Deployment <a name="deployment"></a>
 
-- Is controller  
+- It's a controller  
+- Ensures that at least 75% of desired Pods are up (25% max unavailable) 
+- Ensures that only a certain number of Pods are created above the desired number of Pods. It ensures that at most
+  125% of the desired number of Pods are up (25% max surge)
 
 ### Feature
 
@@ -128,10 +131,14 @@ spec:
 - Canary
 - Blue / Green
 
-#### update deployment
+#### Update deployment
+
+- Deployment's roll out is triggered  if and only if the Deployment's Pod template (that is, .spec.template) is changed
 
 ```kubectl set image deploy [deploy-name] [deploy-container]=image:verion```
+
 **OR**
+
 ```kubectl edit deploy [deploy-name]```
 
 #### Rollup deployment
@@ -146,9 +153,10 @@ spec:
 
 ```kubectl scale deployment [deploy-name] --replicas=[replica-number]```
 
+
 ## Job <a name="job"> </a>
 
-- Run repated tasks
+- Run repeated tasks
 - Is controller which supervise Pod to accomplish certain task
 
 ### Types
@@ -159,7 +167,7 @@ spec:
     - Must be deleted manually
 - Scheduler (CronJob)
     - Similar to cron job in linux
-    - Main purpose free space, dump logs,... repetelly
+    - Main purpose free space, dump logs,... repeatedly
 
 ## DeamonSet <a name="deamonset"> </a>
 
@@ -185,7 +193,7 @@ spec:
 
 - **Get all**
     ```kubectl get po -l app=[rc-name]```
-    ```kubectl  get pod -o [format]```
+    ```kubectl get pod -o [format]```
 
 - **Scale up and down**
     ```kubectl scale rc <rc-name> --replicas=[new-number]  ```

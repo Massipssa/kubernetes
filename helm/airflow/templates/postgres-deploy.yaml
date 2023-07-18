@@ -1,0 +1,37 @@
+# Postgresql deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "airflow.postgresql.fullname" . }}-deploy
+  component: database
+  release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.postgresql.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      release: {{ $.Release.Name }}
+      component: database
+  template:
+    metadata:
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        release: {{ $.Release.Name }}
+        component: database
+    spec:
+      containers:
+        - name: postgresql-container
+          image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
+          ports:
+            - name: {{ .Values.postgresql.service.name }}
+              containerPort: {{ .Values.postgresql.service.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.postgresql.configMapName }}
+          volumeMounts:
+            - mountPath: {{ .Values.postgresql.storage.path }}
+              name: {{ .Values.postgresql.storage.name }}
+      volumes:
+        - name: {{ .Values.postgresql.storage.name }}
+          persistentVolumeClaim:
+            claimName: {{ include "airflow.postgresql.fullname" . }}-pv-claim

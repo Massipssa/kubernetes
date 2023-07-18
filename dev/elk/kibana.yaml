@@ -15,10 +15,11 @@ metadata:
   labels:
     app: kibana
 spec:
-  ports:
-    - port: 5601
   selector:
     app: kibana
+  ports:
+    - port: 5601
+
 ---
 
 #------------------------------

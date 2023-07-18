@@ -1,0 +1,14 @@
+# the version of the helm api (v2 for helm 3 and v1 for helm 2)
+apiVersion: v2
+# the version of app you plan to install with helm
+appVersion: "1.0"
+description: Airflow scheduler
+name: airflow
+# the version of chart
+version: 0.0.1
+# keywords to search in the repository
+keywords:
+  - airflow
+  - scheduler
+# could be also library
+type: application

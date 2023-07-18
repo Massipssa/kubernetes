@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "airflow.postgresql.fullname" . }}-service
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    release: {{ .Release.Name }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.postgresql.service.port }}
+  selector:
+    app: postgresql # todo

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: aiflow-container
-          image: puckel/docker-airflow
+          image: "{ { .Values.airflow.image.repository } }:{{ .Values.airflow.image.tag }}"
           ports:
             - name: airflow-port
               containerPort: 8080
