@@ -1,0 +1,1 @@
+Helm installed with release: {{ .Release.Name }} and chart: {{ .Chart.Name}}
