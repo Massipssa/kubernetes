@@ -17,7 +17,6 @@ spec:
       containers:
         - name: aiflow-container
           image: "{ { .Values.airflow.image.repository } }:{{ .Values.airflow.image.tag }}"
-        - name: airflow-container
           ports:
             - name: airflow-port
               containerPort: 8080
