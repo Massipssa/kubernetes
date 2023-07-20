@@ -14,7 +14,7 @@ spec:
       # Pass env variable to pod using literal configmap
       env: 
         - name: SPECIAL_LEVEL_KEY
-          valuefrom:
+          valueFrom:
             configMapKeyRef: 
               name: test-configmap-2
               key: key1
