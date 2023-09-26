@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-scheduler-svc
+  labels:
+    tier: airflow
+    component: scheduler
+    release: {{ .Release.Name }}
+    #chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    #heritage: {{ .Release.Service }}
+spec:
+  clusterIP: None
+  selector:
+    tier: airflow
+    component: scheduler
+    release: {{ .Release.Name }}
+  ports:
+    - name: task-logs # why is task logger ? 
+      protocol: TCP
+      port: {{ .Values.ports.scheduler }}
+      targetPort: {{ .Values.ports.scheduler }}

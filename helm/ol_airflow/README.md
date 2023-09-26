@@ -1,6 +1,0 @@
-- **charts**: add external charts as dependencies
-- **values.schema.json**: defines the structures of the values of values.yaml
-- Release
-  - Instance of chart 
-  - Release revision: updating existing instance  
-  - Release change: add additional feature

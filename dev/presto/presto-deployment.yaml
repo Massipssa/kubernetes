@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presto-deploy
+  namespace: presto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: presto
+  template:
+    metadata:
+      labels:
+        app: presto
+    spec:
+      containers:
+      - name: presto-coordinator
+        image: greattenchu/openjdk-presto-k:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      - name: presto-worker
+        image: greattenchu/openjdk-prestoworker-k:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8181

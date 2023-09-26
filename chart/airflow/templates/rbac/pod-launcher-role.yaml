@@ -1,0 +1,53 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: "{{ .Values.rbac.podRoleName }}"
+  # todo
+  #namespace: "airflow"
+  labels:
+    tier: airflow
+    release: {{ $.Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: Helm
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "services"
+      - "endpoints"
+      - "pods"
+    verbs:
+      - "get"
+      - "list"
+      - "create"
+      - "delete"
+      - "watch"
+      - "patch"
+  - apiGroups:
+      - ""
+    resources:
+      - "pods/logs"
+    verbs:
+      - "get"
+      - "list"
+      - "create"
+      - "delete"
+      - "watch"
+      - "patch"
+  - apiGroups:
+      - ""
+    resources:
+      - "pods/exec"
+    verbs:
+      - "get"
+      - "list"
+      - "create"
+      - "delete"
+      - "watch"
+      - "patch"
+  - apiGroups:
+      - ""
+    resources:
+      - "events"
+    verbs:
+      - "list"

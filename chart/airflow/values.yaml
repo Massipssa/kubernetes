@@ -1,0 +1,34 @@
+webServer:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: "apache/airflow"
+    tag: "2.2.4"
+  port: 8080
+
+postgresql:
+  replicaCount: 1
+  dbName: postgresdb
+  configMapName: postgres-config
+  image:
+    repository: postgres
+    tag: latest
+  service:
+    port: 5432
+    name: postgres-port
+  storage:
+    name: postgredb
+    pvCapacity: 5Gi
+    pvcStorageRequest: 5Gi
+    path: /tmp/data/db/postgresql
+  auth:
+    username: airflow
+    password: airflow
+
+rbac:
+  podRoleName: pod-launcher-role
+
+
+ports:
+  airflowUI: 8080
+  scheduler: 8793
