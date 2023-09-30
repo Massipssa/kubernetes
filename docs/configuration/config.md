@@ -4,9 +4,9 @@
 
 - K8s object which to help handle configuration with container
 - Way to make images portable
-* K8s object that helps to handle configuration inside container
-* Way to make the images portable
-* Create:
+- K8s object that helps to handle configuration inside container
+- Way to make the images portable
+- Create:
 
     ```kubectl create configmap <map-name> <data-source>```
 
@@ -23,8 +23,12 @@
     ```kubectl create configmap test-configmap-2 --from-literal=key1=value1```
 
 - Pass configMap to pod using:
-  - Volumes
-  - Env variables
+  - **Volume Mounts**
+    - Data appears in the container's file system at runtime 
+    - Each top-level key in the config data becomes a file name
+  - **Environment variables**
+    - Data appears as environment variables visible to the container at runtime
+    - You can specify specific keys and variable names for each piece of data
 
 ## Secret
 

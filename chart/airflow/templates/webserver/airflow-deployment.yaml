@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ include "airflow.fullname" . }}-deploy #{{ include "airflow.name" . }}-deploy
+  name: {{ include "airflow.fullname" . }}-deploy
   component: airflow # todo
   release: {{ .Release.Name }}
 spec:

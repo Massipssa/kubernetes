@@ -1,0 +1,27 @@
+#------------------------------
+#         Storage class
+#------------------------------
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: data
+  #namespace: kube-logging
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+#------------------------------
+#         Volume
+#------------------------------
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data
+  #namespace: kube-logging
+spec:
+  capacity:
+    storage: 400Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/massi/dev/kubernetes/elk/data"

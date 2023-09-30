@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "elk.name" . }}-kibana-svc
+  namespace: {{ .Values.namespace.name }}
+  release: {{ .Release.Name }}
+  labels:
+    app: kibana
+spec:
+  selector:
+    app: kibana
+  ports:
+    - port: {{ .Values.kibana.port }}

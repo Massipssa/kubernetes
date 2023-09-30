@@ -1,0 +1,10 @@
+namespace:
+  name: logging
+
+kibana:
+  port: 5601
+  replicaCount: 1
+  image:
+    repository: docker.elastic.co/kibana/kibana
+    tag: 7.2.0
+    pullPolicy: IfNotPresent
