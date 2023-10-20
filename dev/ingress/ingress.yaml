@@ -1,22 +1,23 @@
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
+  name: kuard
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/issuer: "letsencrypt-staging"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
-      - https-example.foo.com
-    secretName: testsecret-tls
+    - massi.example.com
+    secretName: quickstart-example-tls
   rules:
-  - http:
+  - host: massi.example.com
+    http:
       paths:
-      - path: /testpath
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: test
+            name: kuard
             port:
               number: 80

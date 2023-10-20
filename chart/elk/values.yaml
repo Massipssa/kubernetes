@@ -1,8 +1,21 @@
 namespace:
-  name: logging
+  name: elk
+
+
+elasticsearch:
+  httpPort: 9200
+  transportPort: 9300
+  httpPortName: "rest"
+  transportPortName: "inner-port"
+  replicaCount: 3
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: 7.2.0
+    pullPolicy: IfNotPresent
 
 kibana:
-  port: 5601
+  httpPort: 5601
+  targetPort: 5601
   replicaCount: 1
   image:
     repository: docker.elastic.co/kibana/kibana
