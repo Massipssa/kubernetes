@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch
+  namespace: {{ .Values.namespace.name }}
+  release: {{ .Release.Name | quote }}
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  clusterIP: None
+  ports:
+    - port: {{ .Values.elasticsearch.httpPort }}
+      name: {{ .Values.elasticsearch.httpPortName }}
+    - port: {{ .Values.elasticsearch.transportPort }}
+      name: {{ .Values.elasticsearch.transportPortName }} 
