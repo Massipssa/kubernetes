@@ -42,7 +42,17 @@ kubectl get secret mysecret2 -o json | jq -r .data.username | base64 -d
 
 - Create a pod and mount secret on it
   
-```k run sngix --image=nginx --dry-run=client -o yaml > spod.yaml```
+```kubectl run sngix --image=nginx --dry-run=client -o yaml > spod.yaml```
+
+
+## Service account 
+
+```
+kubectl get serviceaccount -A
+kubectl get sa --all-namespaces 
+kubectl create serviceaccount myuser
+kubectl create token myuser
+```
 
 
 
