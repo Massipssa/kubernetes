@@ -6,3 +6,5 @@
 - Upgrade: ```helm upgrade -f values-file.yaml <release-name>```
 
 ## Repo
+
+- add: helm repo add [NAME] [REPO_URL]
