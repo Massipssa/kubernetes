@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Pod
-metadata: 
+metadata:
   name: ngix-pod
   namespace: dev
-  labels: 
+  labels:
     app: ngix
     tier: dev
-spec: 
-  containers: 
+spec:
+  containers:
     - name: ngix-container
       image: ngix
       # port to expose
@@ -17,10 +17,13 @@ spec:
           protocol: TCP
       # set env variables
       env:
-        - name: test
-          value: toto
+        - name: VAR_NAME
+          value: var_value
 
-      command: ["sh", "-c", "echo hello"]
+      command:
+        - "bin/sh"
+        - "-c"
+        - "echo hello word"
 
       # where to mount the volume
       volumeMounts:
