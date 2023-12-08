@@ -9,7 +9,9 @@ spec:
     runAsUser: 1000
     # gid
     runAsGroup: 3000
-    # process are also part of supplementary group ID 2000
+    # cont process are also part of supplementary group ID 2000, the volume
+    # '/data/demo' 
+    # will be own by this group and also new created files
     fsGroup: 2000
   volumes:
   - name: sec-ctx-vol
