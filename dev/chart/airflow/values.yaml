@@ -1,8 +1,0 @@
-airflowPortal:
-  replicas_count: 1
-  port: 8080
-  image:
-    repository: puckel/docker-airflow
-    version: latest
-service:
-  port: 8080

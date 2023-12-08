@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-svc
+
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
+      volumeMounts:
+        # name of the pvc declared in volumes
+        - name: data
+          mountPath: /path/to/data
+        - name: test-volume
+          mountPath: /path/to/folder
+        - name: simple-volume
+          mountPath: /var/test
+  volumes:
+    - name: test-volume
+      hostPath:
+        # directory location on the host
+        path: /tmp
+        type: Directory
+    - name: simple-volume
+      emptyDir: {}
+    - name: data
+      persistentVolumeClaim:
+        claimName: pvc-dynamic

@@ -1,0 +1,32 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "airflow.postgresql.fullname" . }}-pv
+  labels:
+    type: local
+    app: {{ include "airflow.labels.app" . }}
+spec:
+  # storage class
+  storageClassName: manual
+  capacity:
+    storage: {{ .Values.postgresql.storage.pvCapacity }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/tmp/data/db" # todo put in var
+    type: Directory
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "airflow.postgresql.fullname" . }}-pv-claim
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.postgresql.storage.pvcStorageRequest}}

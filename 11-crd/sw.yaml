@@ -1,0 +1,8 @@
+apiVersion: datacenter.com/v1
+kind: Switch
+metadata:
+  name: switch1
+spec:
+  dataCenter: uksouth
+  rack: 280
+  type: physical

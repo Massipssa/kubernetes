@@ -1,0 +1,30 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: switches.datacenter.com  # name must match the spec fields below, and be in the form: <plural>.<group>
+spec:
+  group: datacenter.com  # group name to use for REST API: /apis/<group>/<version>
+  versions:
+    - name: v1
+      served: true # Each version can be enabled/disabled by Served flag.
+      storage: true # One and only one version must be marked as the storage version.
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                dataCenter:
+                  type: string
+                rack:
+                  type: integer
+                type:
+                  type: string
+  scope: Cluster # either Namespaced or Cluster
+  names:
+    plural: switches # plural name to be used in the URL: /apis/<group>/<version>/<plural>
+    singular: switch # singular name to be used as an alias on the CLI and for display
+    kind: Switch # kind is normally the CamelCased singular type. Your resource manifests use this.
+    shortNames: # shortNames allow shorter string to match your resource on the CLI
+    - sw

@@ -1,2 +1,0 @@
-- Taint
-  - Ensure that nodes aren't scheduled onto inappropriate nodes

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuard
+  annotations:
+    cert-manager.io/issuer: "letsencrypt-staging"
+spec:
+  ingressClassName: nginx
+  tls:
+  # hosts that are defined in the certificate
+  - hosts:
+      - massi.example.com
+  # secret that contains the certificate and its private key
+  #  secretName: quickstart-example-tls
+    secretName: tls-secret
+
+  rules:
+  - host: massi.test.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kuard
+            port:
+              number: 80
