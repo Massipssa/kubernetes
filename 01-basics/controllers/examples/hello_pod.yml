@@ -1,15 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ngix-pod
+  name: nginx-pod
   namespace: dev
   labels:
-    app: ngix
+    app: nginx
     tier: dev
 spec:
   containers:
-    - name: ngix-container
-      image: ngix
+    - name: nginx-container
+      image: nginx
+      imagePullPolicy: IfNotPresent
       # port to expose
       ports:
         - name: test-port
@@ -20,16 +21,13 @@ spec:
         - name: VAR_NAME
           value: var_value
 
-      command:
-        - "bin/sh"
-        - "-c"
-        - "echo hello word"
+      command: ["bin/sh", "-c", "echo hello word"]
 
       # where to mount the volume
       volumeMounts:
         - name: test-volume
           mountPath: /path/to/volume
-
+  # Always, OnFailure, Never
   restartPolicy: Never
 
   # run the pods inside the node with label disktype: SSD

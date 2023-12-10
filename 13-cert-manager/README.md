@@ -6,14 +6,13 @@
 
 ``helm install quickstart ingress-nginx/ingress-nginx``
 
-- Deploy 
+- Deploy
 
 ``kubectl apply -f example.yaml``
 
+## Auto signed certificate
 
-## Auto signed certificate 
-
-1. Create a certificate and a private key using openssl 
+1. Create a certificate and a private key using openssl
 
 ```bash
 openssl req -nodes -x509 -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt \
@@ -27,8 +26,8 @@ kubectl create secret tls tls-secret --key tls.key --cert tls.crt
 ```
 
 
-## Cert-Manager 
+## Cert-Manager
 
-- Issuer: defines how cert-manager will request TLS certificates. They are related to namespace. 
+- Issuer: defines how cert-manager will request TLS certificates. They are related to namespace.
 - ClusterIssuer which is meant to be a cluster-wide version.
 - Certificates: resources allow you to specify the details of the certificate you want to request.
