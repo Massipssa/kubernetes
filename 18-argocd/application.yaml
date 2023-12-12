@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: default
+spec:
+
+  # project name in argocd
+  project: default
+
+  source:
+    repoURL: https://github.com/Massipssa/code-server.git
+    targetRevision: HEAD
+    path: chart
+  destination: 
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true
