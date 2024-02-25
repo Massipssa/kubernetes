@@ -1,0 +1,69 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: config-example
+  annotations:
+    meta.helm.sh/release-name: prometheus     
+    meta.helm.sh/release-namespace: prometheus
+  labels:
+    alertmanagerConfig: "true"
+    release: prometheus
+  namespace: default
+spec:
+  # this is default receiver (root) ith all parameters, which are inherited by the child routes if they are not overwritten.
+  route:
+    groupBy: ['job']
+    # how long to intially wait before sending the notification for the group
+    groupWait: 30s
+    # how long to wait before sending a notification for a new alert that join the group for which a notification has already been sent
+    groupInterval: 5m
+    # send the alert again
+    repeatInterval: 12h
+    # defautlt receiver
+    receiver: 'webhook'
+
+    # additional routes     
+    routes:
+    - matchers:
+        - matchType: '!='
+          name: severity
+          value: warning
+        - name: foo
+          value: bar
+      receiver: email
+      repeatInterval: 24h
+    - matchers:
+        - name: severity
+          value: warning
+      receiver: slack
+      repeatInterval: 24h
+
+  receivers:
+  # email receiver
+  - name: 'email'
+    emailConfigs:
+      - authPassword:
+          key: password 
+          name: test
+        authUsername: username 
+        from: email@test.com
+        headers:
+        - key: Sender 
+          value: email@test.com
+        - key: subject
+          value: subject 
+        - key: From
+          value: from@email.com
+        to: to@gmail.com
+        smarthost: smtp-server:25
+        requireTLS: true
+        sendResolved: true
+        tlsConfig:
+          ca: 
+            configMap:
+              key: key
+              name: name  
+  # webhook receiver
+  - name: 'webhook'
+    webhookConfigs:
+    - url: 'http://example.com/'

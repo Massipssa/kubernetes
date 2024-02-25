@@ -3,9 +3,13 @@ kind: Pod
 metadata:
   name: nginx-pod
   namespace: dev
+  # Help to filter on specific objects
   labels:
     app: nginx
     tier: dev
+  # Attach arbitrary non-identifying metadata to objects   
+  annotations:
+    description: this is a description  
 spec:
   containers:
     - name: nginx-container
@@ -16,13 +20,23 @@ spec:
         - name: test-port
           containerPort: 8080
           protocol: TCP
+
+      envFrom: 
+        - name: test
+          value: hello     
       # set env variables
       env:
         - name: VAR_NAME
           value: var_value
-
       command: ["bin/sh", "-c", "echo hello word"]
-
+      
+      resources:
+        limits:
+          cpu: 200m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi  
       # where to mount the volume
       volumeMounts:
         - name: test-volume

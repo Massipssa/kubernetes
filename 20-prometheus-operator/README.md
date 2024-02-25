@@ -1,3 +1,5 @@
+[archi](imag/)
+
 ## Add Helm repository
 
 ```
@@ -22,3 +24,15 @@ kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n prom
 ```
 kubectl apply -f .\deploy.yaml -f .\servicemonitor.yaml
 ```
+
+## Grafana
+
+- Forward the port
+
+```
+kubectl port-forward svc/prometheus-grafana 3000:80 -n prometheus
+```
+
+- Login: default login information
+    - username: admin
+    - password: prom-operator
