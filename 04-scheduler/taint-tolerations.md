@@ -16,13 +16,12 @@
 
 - taints are set on the nodes
 
- ```k taint nodes node-name key=value:taint-effect```
+ ```kubectl taint nodes <node-name> key=value:taint-effect```
  
  - Taint effect: what happens to the pods if they do not tolerate the taint 
 	- **NoSchedule:** pod will not be scheduled on the node
 	- **PreferNoSchedule:** the system will try to avoid placing the pod in the node, but it's not guaranteed 
-	- **NoExecute:** Pods that do not tolerate the taint are evicted immediately, _tolerationSeconds_  is used for other
-    pods. 
+	- **NoExecute:** Pods that do not tolerate the taint are evicted immediately, _tolerationSeconds_  is used for other pods. 
 
 - The toleration are set on the pods
 
