@@ -3,7 +3,7 @@
 ## Request
 
 - Provides Kubernetes with an idea of how many resources a container is expected to use
-- The cluster uses this information to select a node that has enough resources available 
+- The cluster uses this information to select a node that has enough resources available
 - What container grantee to get (not more but maybe equal or less)
 
 ## Limit
@@ -14,9 +14,8 @@
 
 ## ResourceQuotas
 
-Kubernetes object that sets limits on the resources used within a namespace. If creating of modifying a resource would 
-go beyond this limit, the request will be denied. 
-
+Kubernetes object that sets limits on the resources used within a namespace. If creating of modifying a resource would
+go beyond this limit, the request will be denied.
 
 ```yaml
     apiVersion: v1

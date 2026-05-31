@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: Airflow Lab API MVP
+  version: 0.1.0
+paths:
+  /api/labs:
+    post:
+      summary: Create one Airflow 3 lab on EKS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLabRequest"
+            example:
+              template: airflow3-eks
+              labId: student1-airflow3
+              student: student1
+              ttlMinutes: 240
+              expose: port-forward
+      responses:
+        "202":
+          description: Lab creation job accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lab"
+  /api/labs/{labId}:
+    get:
+      summary: Get lab status
+      parameters:
+        - name: labId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Current lab state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lab"
+    delete:
+      summary: Delete a lab
+      parameters:
+        - name: labId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Lab deletion job accepted
+components:
+  schemas:
+    CreateLabRequest:
+      type: object
+      required:
+        - template
+        - labId
+        - student
+      properties:
+        template:
+          type: string
+          enum:
+            - airflow3-eks
+        labId:
+          type: string
+          pattern: "^[a-z0-9][a-z0-9-]{2,48}$"
+        student:
+          type: string
+        ttlMinutes:
+          type: integer
+          minimum: 30
+          maximum: 1440
+          default: 240
+        expose:
+          type: string
+          enum:
+            - port-forward
+            - alb
+          default: port-forward
+        hostname:
+          type: string
+          description: Required when expose is alb.
+    Lab:
+      type: object
+      properties:
+        labId:
+          type: string
+        status:
+          type: string
+          enum:
+            - creating
+            - running
+            - failed
+            - deleting
+            - deleted
+        namespace:
+          type: string
+        releaseName:
+          type: string
+        url:
+          type:
+            - string
+            - "null"
+        expiresAt:
+          type:
+            - string
+            - "null"
+          format: date-time

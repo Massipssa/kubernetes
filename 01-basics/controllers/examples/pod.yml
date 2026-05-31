@@ -3,80 +3,34 @@ kind: Pod
 metadata:
   name: nginx-pod
   namespace: dev
-  # Help to filter on specific objects
   labels:
     app: nginx
-    tier: dev
-  # Attach arbitrary non-identifying metadata to objects   
+    tier: frontend
   annotations:
-    description: this is a description  
+    description: Basic nginx pod example
 spec:
+  restartPolicy: Always
   containers:
-    - name: nginx-container
-      image: nginx
+    - name: nginx
+      image: nginx:1.25
       imagePullPolicy: IfNotPresent
-      # port to expose
       ports:
-        - name: test-port
-          containerPort: 8080
+        - name: http
+          containerPort: 80
           protocol: TCP
-
-      envFrom: 
-        - name: test
-          value: hello     
-      # set env variables
       env:
-        - name: VAR_NAME
-          value: var_value
-      command: ["bin/sh", "-c", "echo hello word"]
-      
+        - name: APP_ENV
+          value: dev
       resources:
-        limits:
-          cpu: 200m
-          memory: 512Mi
         requests:
           cpu: 100m
-          memory: 128Mi  
-      # where to mount the volume
+          memory: 128Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
       volumeMounts:
-        - name: test-volume
-          mountPath: /path/to/volume
-  # Always, OnFailure, Never
-  restartPolicy: Never
-
-  # run the pods inside the node with label disktype: SSD
-  nodeSelector:
-    disktype: SSD
-
-  # schedule in specified node
-  nodeName: foo-node
-
-  # specify constraints based on the node labels
-  affinity:
-    nodeAffinity:
-      # hard constraint
-      # the constraint must be met during the scheduling
-      requiredDuringSchedulingIgnoredDuringExecution:
-        # pod can be placed inside the pod having the label 'kubernetes.io/e2e-az-name'
-        # and whose values is either  'e2e-az1' or 'e2e-az2'
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/e2e-az-name
-                operator: In
-                values:
-                  - e2e-az1
-                  - e2e-az2
-      # soft constraint
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: another-node-label-key
-                operator: In
-                values:
-                  - another-node-label-value
-  # What volumes to provide
+        - name: cache
+          mountPath: /usr/share/nginx/html/cache
   volumes:
-    - name: test-volume
-      awsElasticBlockStore:
-        volumeID: my-id
+    - name: cache
+      emptyDir: {}

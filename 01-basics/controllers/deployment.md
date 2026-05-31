@@ -1,44 +1,37 @@
 # Deployment
 
-- It's a controller  
-- Ensures that at least 75% of desired Pods are up (25% max unavailable) 
-- Ensures that only a certain number of Pods are created above the desired number of Pods
-- It ensures that at most **125%** of the desired number of Pods are up (25% max surge)
+A Deployment manages **stateless** application replicas. It creates and updates ReplicaSets, which then keep the desired number of Pods running.
 
-## Feature
+Use Deployments for most long-running web services, APIs, workers, and stateless applications.
 
-- Multiple replicas of pods
-- Update 
-- Rollback
-- Scale up or down
-- Pause and resume (test and validate new versions)
+## Features
 
-## Types
+- Multiple replicas of the same Pod template.
+- Rolling updates with controlled availability.
+- Rollback to a previous revision.
+- Scaling up or down.
+- Pause and resume during a rollout.
 
-- Recreate (when version 1 is shutdown start version 2) implies downtime of service
-- RollingUpdate (Ramped or Incremental)
-- Canary
-- Blue / Green
+## Update Strategies
 
-## Update deployment (rollout)
+- **Recreate:** stops old Pods before starting new ones. This can cause downtime.
+- **RollingUpdate:** gradually replaces old Pods with new Pods. This is the default.
+- **Canary:** releases to a small subset first. Usually implemented with Deployments plus routing or progressive delivery tooling.
+- **Blue/Green:** runs two versions and switches traffic between them.
 
-- Allows to change a deployment's Pod template, gradually replacing replicas with zero downtime
-- Deployment's roll out is triggered  if and only if the Deployment's Pod template (that is, .spec.template) is changed
+## Rollouts
 
-```kubectl set image deploy [deploy-name] [deploy-container]=image:verion```
+A rollout is triggered when the Deployment Pod template changes, for example when the container image tag changes.
 
-**OR**
+```bash
+kubectl set image deployment/<deployment-name> <container-name>=<image>:<tag> -n dev
+kubectl rollout status deployment/<deployment-name> -n dev
+kubectl rollout history deployment/<deployment-name> -n dev
+kubectl rollout undo deployment/<deployment-name> -n dev
+```
 
-```kubectl edit deploy [deploy-name]```
+## Scale
 
-- Undo
-
-```kubectl rollout undo deployment/[deploy-name]```
-
-- Check status
-
-```kubectl rollout status deployment/[deploy-name]```
-
-## Scale up and down
-
-```kubectl scale deployment [deploy-name] --replicas=[replica-number]```
+```bash
+kubectl scale deployment <deployment-name> --replicas=5 -n dev
+```

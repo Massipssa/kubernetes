@@ -1,0 +1,60 @@
+useStandardNaming: true
+
+airflowVersion: "3.2.0"
+defaultAirflowRepository: apache/airflow
+defaultAirflowTag: "3.2.0"
+
+executor: LocalExecutor
+
+createUserJob:
+  defaultUser:
+    enabled: true
+    username: admin
+    password: admin
+    role: Admin
+    email: admin@example.com
+    firstName: Lab
+    lastName: Admin
+
+env:
+  - name: AIRFLOW__CORE__LOAD_EXAMPLES
+    value: "True"
+  - name: FORWARDED_ALLOW_IPS
+    value: "*"
+
+apiServer:
+  replicas: 1
+  service:
+    type: ClusterIP
+  args:
+    - bash
+    - -c
+    - exec airflow api-server --proxy-headers
+
+scheduler:
+  replicas: 1
+
+triggerer:
+  replicas: 1
+
+statsd:
+  enabled: false
+
+flower:
+  enabled: false
+
+logs:
+  persistence:
+    enabled: false
+
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: true
+    postgresPassword: postgres
+
+redis:
+  enabled: false
+
+workers:
+  replicas: 0

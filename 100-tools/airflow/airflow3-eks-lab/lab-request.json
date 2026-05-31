@@ -1,0 +1,7 @@
+{
+  "template": "airflow3-eks",
+  "labId": "student1-airflow3",
+  "student": "student1",
+  "ttlMinutes": 240,
+  "expose": "port-forward"
+}

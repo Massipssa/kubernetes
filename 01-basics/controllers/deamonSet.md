@@ -1,10 +1,21 @@
-## DeamonSet
+# DaemonSet
 
-- Ensure that all (or some) nodes of cluster run one Pod of application
-- Can be used to:
-  - Deploy one Pod by node
-  - Deploy one pod by subset of nodes (in this case we need to tag nodes by labels)
-- Add and remove Pods as the nodes join or leave cluster
-- Some uses cases:
-  - Collect logs: install Filebeat, fluentd on every node
-  - Monitoring: Prometheus on each node
+A DaemonSet ensures that every matching node runs one copy of a Pod.
+
+Use DaemonSets for node-level agents such as:
+
+- Log collectors.
+- Monitoring agents.
+- Storage plugins.
+- Network plugins.
+
+DaemonSets automatically add Pods when nodes join the cluster and remove Pods when nodes leave.
+
+## Commands
+
+```bash
+kubectl apply -f controllers/examples/daemonSet.yml
+kubectl get daemonsets -n dev
+kubectl describe daemonset nginx-daemonset -n dev
+kubectl delete -f controllers/examples/daemonSet.yml
+```

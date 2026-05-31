@@ -1,35 +1,21 @@
-## ReplicatSet
+# ReplicaSet
 
-- Ensures that a number of pods is running always at any time
-- ReplicaSet and Pods are linked by ***labels***
+A ReplicaSet keeps a desired number of matching Pods running.
 
-```yaml
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  # name of rs
-  name: nginx-rs
-spec:
-  # nb of replicas to have all time
-  replicas: 3
-  # link between RS and Pods is by selector and labels
-  selector:
-    # when have one value
-    matchLabels:
-        app: nginx-app
-    matchExpressions:
-        - {key: tier, operator: In, values: [frontend]}
-  # pods to run
-  template:
-    metadata:
-      name: nginx-pod
-      labels:
-        app: nginx-app
-        tier: frontend
-    spec:
-      containers:
-      - name: nginx-container
-        image: nginx
-        ports:
-          - containerPort: 80
+ReplicaSets and Pods are linked by labels:
+
+- `spec.selector` defines which Pods the ReplicaSet owns.
+- `spec.template.metadata.labels` defines the labels added to new Pods.
+- The selector must match the Pod template labels.
+
+In most applications, you create a Deployment and let the Deployment manage ReplicaSets for you.
+
+## Commands
+
+```bash
+kubectl apply -f controllers/examples/rs.yml
+kubectl get replicasets -n dev
+kubectl describe replicaset nginx-rs -n dev
+kubectl scale replicaset nginx-rs --replicas=5 -n dev
+kubectl delete -f controllers/examples/rs.yml
 ```

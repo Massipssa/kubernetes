@@ -1,95 +1,72 @@
-# Kubernetes
+# Kubernetes Basics
 
-- Container design to do one thing, and it is:
-  - Faster
-  - Reliable
-  - Efficient
-  - Light-weight
-  - Scalable
-- The fact that containers are scalable we need tool to manage them
-- Container Management tool which
-  - Automates container deployment
-  - Container (de) scaling
-  - Container load balancing
+This folder introduces the core Kubernetes objects you need before moving into configuration, storage, scheduling, services, and security.
+
+## Map
+
+- [Cluster architecture](cluster.md)
+- [kubectl basics](kubectl/README.md)
+- [kubectl operations and selectors](kubectl/operations.md)
+- [Controllers overview](controllers/README.md)
+- [Example manifests](controllers/examples)
+
+## Why Kubernetes?
+
+Containers package an application process with the dependencies it needs. They are fast to start, portable, efficient, and easy to scale, but a real environment needs orchestration around them.
+
+Kubernetes provides:
+
+- Declarative deployment of containerized applications.
+- Scheduling across a group of machines.
+- Self-healing when Pods or nodes fail.
+- Horizontal scaling.
+- Service discovery and load balancing.
+- Rollouts and rollbacks for application updates.
 
 ## Architecture
 
-1. **Control Plane**
+A Kubernetes cluster has a control plane and one or more worker nodes.
 
-- **kube-api-server**
+### Control Plane
 
-It servers the Kubernetes API, the primary interface to the control plane and the cluster itself.
-When interacting with your Kubernetes cluster, you will usually do so using the Kubernetes API.
-- Validates and configure API objects such as pods, services
-- Responsible for exposing various APIs
+The control plane stores cluster state and decides what should run where.
 
-- **etcd**
-Is the backend data store for the Kubernetes cluster. It provides high-availability storage for all data relating to the
-state of the cluster.
-  - Key-value distributed light-weight database
-  - Stores current states of the cluster
+| Component | Purpose |
+| --- | --- |
+| `kube-apiserver` | Exposes the Kubernetes API and validates requests for objects such as Pods, Services, Deployments, and Namespaces. |
+| `etcd` | Stores cluster state as a distributed key-value database. |
+| `kube-scheduler` | Assigns newly created Pods to suitable nodes. |
+| `kube-controller-manager` | Runs built-in controllers that reconcile the current cluster state with the desired state. |
+| `cloud-controller-manager` | Integrates Kubernetes with cloud-provider APIs when the cluster runs on a cloud platform. |
 
-- **kube-scheduler**
-
-It handles scheduling, the process of selecting an available node in the cluster on which to run containers.
-
-- **kube-controller-manager**
-
-It runs a collection of multiple controller utilities in a single process. These controllers carry out a variety of
-automation-related tasks within the Kubernetes cluster.
-- Some built-in controllers
-  - Node controller
-  - Replication controller
-  - End-point Controller
-  - Service controller
-All controllers are responsible for health of cluster
-
-- **cloud-controller-manager**
-
-It provides an interface between Kubernetes and various cloud platforms. It is only used when using cloud-based
-resources alongside Kubernetes.
-
-<img alt="kub_master_archi" src="./screeshots/master_cmpts.PNG"> 
+<img alt="Kubernetes control-plane components" src="./screeshots/master_cmpts.PNG">
 
 ### Worker Nodes
 
-Kubernetes Nodes are the machines where the containers managed by the cluster run. A cluster can have any number of nodes.
-Various node components manage containers on the machine and communicate with the control plane.
+Worker nodes run the Pods scheduled by the control plane.
 
-- **kubelet**
+| Component | Purpose |
+| --- | --- |
+| `kubelet` | Runs on each node, starts Pods through the container runtime, and reports Pod and node status back to the API server. |
+| `kube-proxy` | Maintains networking rules so Services can route traffic to Pods. It commonly uses iptables or IPVS on Linux. |
+| Container runtime | Pulls images and runs containers. Common choices include `containerd` and Docker-compatible runtimes. |
 
-It is the Kubernetes agent that runs on each node. It communicates with the control plane and ensure that containers are
-run on its node as instructed by control plane.
-Kubelet also handles the process of reporting container status and other data about containers back to the control plane.
+<img alt="Kubernetes worker-node components" src="./screeshots/worker_cmpts.PNG">
 
-  - It is the Primary node engine that runs in worker node 
-  - It ensures that containers inside Pods are running, if not it will try to restart pods in the same worker, and if
-the issue is du to worker itself it will try to start it in another worker node.
+## First Commands
 
-- **kube-proxy**
+```bash
+kubectl cluster-info
+kubectl get nodes
+kubectl get namespaces
+kubectl apply -f namespace.yml
+kubectl apply -f controllers/examples/pod.yml
+kubectl get pods -n dev
+```
 
-Is a network proxy. It runs on each node and handles some tasks related to providing networking between containers
-and services in the cluster.
+## Recommended Learning Order
 
-- Maintains the entire internet configuration
-- Maintains networks distributed network across all nodes
-
-Two modes to create or update network rule:
-
-- IPTables
-- IPVS
-- Kernelspace (for windows only)
-
-- **Container runtime**
-The container runtime is not built into Kubernetes. It is a separate piece of software that is responsible foe actually
-running container on the machine.
-Kubernetes supports multiple container runtime implementations. The popular container runtimes are:
-  - Docker
-  - containerd
-
-<img src="./screeshots/worker_cmpts.PNG"> 
-
-3. Tools to interact with API
-
-- Kubectl
-- Minikube
+1. Read [cluster.md](cluster.md) to understand what makes up a cluster.
+2. Practice the commands in [kubectl/README.md](kubectl/README.md).
+3. Apply [namespace.yml](namespace.yml) before examples that use the `dev` namespace.
+4. Study [controllers/pod.md](controllers/pod.md), then move to Deployments, ReplicaSets, Jobs, CronJobs, and DaemonSets.

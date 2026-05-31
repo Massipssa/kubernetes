@@ -1,19 +1,23 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello
+  name: hello-every-five-minutes
+  namespace: dev
 spec:
-  schedule: "* * * * *"
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
-          containers:
-          - name: hello
-            image: busybox:1.28
-            imagePullPolicy: IfNotPresent
-            command:
-            - /bin/sh
-            - -c
-            - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
+          containers:
+            - name: hello
+              image: busybox:1.36
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+              args:
+                - date; echo "Hello from the Kubernetes cluster"

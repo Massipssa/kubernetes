@@ -9,8 +9,8 @@
 - K8s supports multiple volumes as:
   - EmptyDir
   - hostPath
-- Volumes can be used to  store state/data and use it in the pod 
-    
+- Volumes can be used to  store state/data and use it in the pod
+
 ## StorageClass
 
 - A resource which defines in which quality the data will be stored (whether in cloud or locally)
@@ -26,4 +26,3 @@
 - Defines a **request for storage**, including details on the type of storage needed
 - Logically bind an application and the physical location of the data storage
 - They can be defined as an interface between the data storage and the application
-

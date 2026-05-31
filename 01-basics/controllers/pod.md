@@ -1,42 +1,44 @@
-## POD
+# Pod
 
-- Scheduling unit in k8S
-- Provides runtime environment for application that we deploy
+A Pod is the smallest schedulable unit in Kubernetes. It provides the runtime environment for one or more containers that need to share networking, storage, and lifecycle.
 
-- **Pod lifecycle**
-  1. Submit file (yaml or json) to API Server
-  2. Pods go to scheduler, and they stay in **Pending** state until all scheduled they pass to **Running**
-  3. Pod may have:
-     - **Succeed**
-     - **Failed**: when Pod fails it cannot be recovered
+Most production Pods are created through controllers such as Deployments, Jobs, CronJobs, and DaemonSets.
 
-- **Create**
-    ```kubectl  create -f path/to/file.yml```
+## Lifecycle
 
-- **Get**
-    ```kubectl  get pod```
+1. You submit a YAML or JSON manifest to the API server.
+2. The scheduler assigns the Pod to a node.
+3. The kubelet on that node starts the containers.
+4. The Pod reports a phase such as `Pending`, `Running`, `Succeeded`, or `Failed`.
 
-- **Describe, delete, get**
-    ```kubectl  <command>  pod [pod-name]```
+Pods are disposable. If a standalone Pod fails, Kubernetes does not create a replacement unless a controller owns it.
 
-## Multi-container Pod 
+## Commands
 
-- They are Pods that include multiple containers that work together
-- Patterns: 
-  - **Sidecar:** performs a task to assist the main container
-  - **Ambassador:** proxies network traffic to and/or from the main container  
-  - **Adapter:** transforms the main container's output in some way
+```bash
+kubectl apply -f controllers/examples/pod.yml
+kubectl get pods -n dev
+kubectl describe pod nginx-pod -n dev
+kubectl logs nginx-pod -n dev
+kubectl delete pod nginx-pod -n dev
+```
 
-- When should use multi-container
- - Only use multi-container Pods when the containers need to be tightly coupled, sharing resources such as network 
-   and storage volumes
+## Multi-Container Pods
 
-## Init Container
+Use multiple containers in one Pod only when the containers are tightly coupled and need to share resources such as the same network namespace or volumes.
 
-- Is a container that runs to complete a task before a Pod's main container starts up
-- When to use
-  - Separate image: can use separate image to perform stat-up tasks using software that the main image does not include
-    or need  
-  - Delay startup: can be used to delay startup of main container until certain preconditions are met 
-  - Security: can perform sensitive stat-up, like consuming secrets in isolation from the main container 
+Common patterns:
 
+- **Sidecar:** assists the main container, for example log shipping or file synchronization.
+- **Ambassador:** proxies traffic to or from the main container.
+- **Adapter:** transforms output from the main container into another format.
+
+## Init Containers
+
+An init container runs to completion before the main application containers start.
+
+Use init containers to:
+
+- Run startup tasks with tools that are not needed in the main image.
+- Delay application startup until a dependency is ready.
+- Isolate sensitive setup work from the main container.
