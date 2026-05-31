@@ -1,17 +1,10 @@
 # Services
 
-A Service gives a stable network identity to a changing set of Pods.
-
-Pods are ephemeral: they can be replaced, rescheduled, and assigned new IP addresses. A Service selects Pods by label and routes traffic to the healthy matching endpoints.
-
-## How Services Work
-
-- `spec.selector` finds the Pods that should receive traffic.
-- `port` is the port exposed by the Service.
-- `targetPort` is the Pod container port, or a named container port such as `http`.
-- `kube-proxy` programs node networking rules so traffic reaches the selected Pods.
-- CoreDNS creates DNS records for Services, for example `nginx-service.dev.svc.cluster.local`.
-
+- Way of grouping pods that are running inside the cluster
+- Get a static IP address
+- Node's **kube-proxy** creates virtual IP for services
+- Labels and selectors are used to discover pods by the service
+ 
 ## Types
 
 | Type | Use it for | Notes |
@@ -64,25 +57,10 @@ kubectl delete -f deployment.yml
 
 ## Ingress
 
-Ingress exposes HTTP and HTTPS routes from outside the cluster to Services inside the cluster.
-
-- **Ingress resource:** declares routing rules, such as path-based routing and name-based virtual hosts.
-- **Ingress controller:** the reverse proxy that implements those rules.
-- **IngressClass:** associates an Ingress resource with the controller that should handle it.
-
-The [ingress.yml](ingress.yml) example assumes an Ingress controller using the class name `nginx`.
-
-## Troubleshooting
-
-Check whether the Service has endpoints:
-
-```bash
-kubectl get endpoints nginx-service -n dev
-```
-
-If no endpoints are listed, compare the Service selector with the Pod labels:
-
-```bash
-kubectl describe service nginx-service -n dev
-kubectl get pods -n dev --show-labels
-```
+- **Ingress Resource**
+  - Define the rules 
+  - Path-based routing 
+  - Name-based virtual hosts
+- **Ingress Controller:** It's a reverse proxy that implements the rules defined by a   
+  Resource
+- **Ingress Class:** associate Resource with Controller
